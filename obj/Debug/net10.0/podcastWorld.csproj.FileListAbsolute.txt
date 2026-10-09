@@ -1,0 +1,14 @@
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\bin\Debug\net10.0\podcastWorld.exe
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\bin\Debug\net10.0\podcastWorld.deps.json
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\bin\Debug\net10.0\podcastWorld.runtimeconfig.json
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\bin\Debug\net10.0\podcastWorld.dll
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\bin\Debug\net10.0\podcastWorld.pdb
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.AssemblyInfoInputs.cache
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.AssemblyInfo.cs
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.csproj.CoreCompileInputs.cache
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.dll
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\refint\podcastWorld.dll
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.pdb
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\podcastWorld.genruntimeconfig.cache
+C:\Users\ilyaa\Desktop\CAB201\podcastWorld\obj\Debug\net10.0\ref\podcastWorld.dll
