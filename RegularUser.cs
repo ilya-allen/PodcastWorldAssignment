@@ -1,5 +1,11 @@
 ﻿namespace podcastWorld;
 
+/// <summary>
+/// A child class of User, serving as the most basic tier of user for the PodcastWorld app.
+/// This class has the least amount of extra features
+/// 
+/// </summary>
+
 public class RegularUser : User
 {
 
