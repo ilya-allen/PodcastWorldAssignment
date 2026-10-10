@@ -13,30 +13,24 @@ public abstract class User
     // the public get setters. The information inside these fields are correct provided
     // the property setters do their job.
 
-    /// <summary>
-    /// The name of the user
-    /// </summary>
+    
+    // The name of the user
     private string _name = string.Empty;
-    /// <summary>
-    /// The age of the user
-    /// </summary>
+    
+    // The age of the user
     private int _age;
-    /// <summary>
-    /// The email of the user
-    /// </summary>
+    
+    // The email of the user
     private string _email = string.Empty;
-    /// <summary>
-    /// The mobile number of the user.
-    /// </summary>
+    
+    // The mobile number of the user.
     private string _mobile;
-    /// <summary>
-    /// The password of the user.
-    /// </summary>
+    
+    // The password of the user.
     private string _password = string.Empty;
 
-    /// <summary>
-    /// A list, storing all playback sessions of the user. Whether complete or incomplete
-    /// </summary>
+    
+    // A list, storing all playback sessions of the user. Whether complete or incomplete
     private readonly List<Playback> _playbacks = new List<Playback>();
 
 
