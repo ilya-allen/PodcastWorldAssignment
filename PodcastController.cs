@@ -1,8 +1,14 @@
 ﻿namespace podcastWorld;
 
+
+/// <summary>
+/// A class that controls the rest of the program. This connects the view and the backend
+/// data stored in the domain classes. This also acts as a bridge for all service classes.
+/// 
+/// Responsibility: Controll the program via connecting UI with backend
+/// </summary>
 public class PodcastController
 {
-    private User? user;
     private MenuView view;
     private UserRepository userRepository;
     private UserService userService;
@@ -10,9 +16,11 @@ public class PodcastController
     private User? currentUser;
 
 
+    /// <summary>
+    /// Constructor for the controller
+    /// </summary>
     public PodcastController()
     {
-        user = null;
         view = new MenuView();
         userRepository = new UserRepository();
         userService = new UserService(userRepository, view);
@@ -21,6 +29,11 @@ public class PodcastController
 
     }
 
+    /// <summary>
+    /// The initial top of the stack loop.
+    /// This method keeps the entire program running. When the user exits
+    /// this loop will end, and therefore the entire program.
+    /// </summary>
     public void Run()
     {
         view.DisplayHeader();
@@ -32,29 +45,41 @@ public class PodcastController
         }
         
     }
-
+    
+    /// <summary>
+    /// This method is the first task. Asks the user whether they wish to register
+    /// or to log in through their respective methods.
+    /// </summary>
+    /// <returns></returns>
     public bool RunMainMenu()
     {
-        int userInput = view.DisplayMainMenu();
+        const int LOG_IN = 1, REGISTER = 2, EXIT = 3;
+
+        int userInput = view.DisplayMainMenu(); // will take an input from one of the above
         switch(userInput)
         {
-            case 1: // ALSO CREATE AN INTS FILE
+            case LOG_IN: 
                 LogInUser();
                 break;
-            case 2: // ALSO CREATE AN INTS FILE
+            case REGISTER: 
                 RegisterUser(); 
                 break;
-            case 3:
+            case EXIT:
                 view.DisplayExitMessage();
                 return false;
         }
         return true;
     }
 
+    /// <summary>
+    /// If the user wishes to log in, this method is called.
+    /// Proccesses the type of user and calls the following types method.
+    /// </summary>
     public void LogInUser()
     {
-        if(userRepository.UserCount() > 0)
+        if(userRepository.UserCount() > 0) // If no users are registered, prompt error
         {
+            // Proccess Login and welcome the user
             User loginAttempt = userService.AuthenticateUser(view.GetLogIn());
             currentUser = loginAttempt;
             view.DisplayString(currentUser.UserWelcomeBackString());
@@ -79,9 +104,15 @@ public class PodcastController
         
     }
 
+    /// <summary>
+    /// Processes the registration of a new user, taking their preffered user type
+    /// and all necessary details to create the user.
+    /// </summary>
 
     public void RegisterUser()
     {
+        // All possible choices for the user to take, each one leading to their
+        // respective log in methods.
         const int REGULAR_USER = 1, PREMIUM_USER = 2, PODCASTER = 3;
         int userInput = view.RegistrationMenu();
         switch(userInput)
@@ -98,31 +129,39 @@ public class PodcastController
         } 
     }
 
+    /// <summary>
+    /// Once a regular listener has logged in, this proccesses all possible tasks
+    /// that the regular listener can choose to do.
+    /// </summary>
     private void RegularLogInMenu()
     {
+        // Aside from the common opening options for all users, these additional inputs are specific
+        // to the Regular listener.
+        const int FEEDBACK = 5, EXIT = 6;
         int userInput;
-        while(currentUser is not null)
+
+        while(currentUser is not null) // Loop as long as the user is logged in
         {
             userInput = view.RegularListenerMenu();
             switch (userInput)
             {
-                case 1:
+                case PodcastConsts.VIEW_DETAILS:
                     view.DisplayString(currentUser.UserInfoString());
                     break;
-                case 2:
+                case PodcastConsts.CHANGE_PASSWORD:
                     userService.ValidatePassword(currentUser);
                     view.DisplayString("Password has been updated.");
                     break;
-                case 3:
+                case PodcastConsts.VIEW_PODCASTS:
                     podcastService.ViewAllPodcasts(currentUser);
                     break;
-                case 4:
+                case PodcastConsts.LISTEN:
                     podcastService.CreatePlayback(currentUser);
                     break;
-                case 5:
+                case FEEDBACK:
                     podcastService.CreateFeedback(currentUser);
                     break;
-                case 6:
+                case EXIT:
                     currentUser = null;
                     break;
                 default:
@@ -133,40 +172,47 @@ public class PodcastController
 
     }
 
+    /// <summary>
+    /// Once a premium user has logged in, this method proccesses all options for the 
+    /// premium user to take while logged in.
+    /// </summary>
     private void PremiumLogInMenu()
     {
+        // Additional premium user specific methods.
+        const int PREMIUM_LISTEN = 5, SUBSCRIBE = 6, UNSUBSCRIBE = 7, FEEDBACK = 8, EXIT = 9; 
         int userInput;
-        while(currentUser is not null)
+
+        while(currentUser is not null) // loop while logged in
         {
             userInput = view.PremiumListenerMenu();
             switch (userInput)
             {
-                case 1:
+                case PodcastConsts.VIEW_DETAILS:
                     view.DisplayString(currentUser.UserInfoString());
                     break;
-                case 2:
+                case PodcastConsts.CHANGE_PASSWORD:
                     userService.ValidatePassword(currentUser);
                     view.DisplayString("Password has been updated.");
                     break;
-                case 3:
+                case PodcastConsts.VIEW_PODCASTS:
                     podcastService.ViewAllPodcasts(currentUser);
                     break;
-                case 4:
+                case PodcastConsts.LISTEN:
                     podcastService.CreatePlayback(currentUser);
                     break;
-                case 5:
+                case PREMIUM_LISTEN:
                     podcastService.CreatePlayback(currentUser, true);
                     break;
-                case 6:
+                case SUBSCRIBE:
                     podcastService.SubscribeToPodcast((PremiumUser)currentUser);
                     break;
-                case 7:
+                case UNSUBSCRIBE:
                     podcastService.UnsubscribeToPodcast((PremiumUser)currentUser);
                     break;
-                case 8:
+                case FEEDBACK:
                     podcastService.CreateFeedback(currentUser);
                     break;
-                case 9:
+                case EXIT:
                     currentUser = null;
                     break;
                 default:
@@ -175,34 +221,41 @@ public class PodcastController
             }
         }
     }
+
+    /// <summary>
+    /// Proccesses all possible tasks the podcaster can undertake while logged in.
+    /// </summary>
+
     private void PodcasterLogInMenu()
     {
+        // create all choices, unique to podcasters
+        const int CREATE_EPISODE = 3, VIEW_EPISODES = 4, VIEW_STATS = 5, FEEDBACK = 6, EXIT = 7;
         int userInput;
-        while(currentUser is not null)
+        while(currentUser is not null) // continue looping until user has logged out
         {
             userInput = view.PodcasterMenu();
             switch (userInput)
             {
-                case 1:
+                case PodcastConsts.VIEW_DETAILS:
                     view.DisplayString(currentUser.UserInfoString());
                     break;
-                case 2:
+                case PodcastConsts.CHANGE_PASSWORD:
                     userService.ValidatePassword(currentUser);
                     view.DisplayString("Password has been updated.");
                     break;
-                case 3:
+                case CREATE_EPISODE:
                     podcastService.CreateEpisode((PodcasterUser)currentUser);
                     break;
-                case 4:
+                case VIEW_EPISODES:
                     podcastService.ViewPodcastEpisodes((PodcasterUser)currentUser);
                     break;
-                case 5:
+                case VIEW_STATS:
                     podcastService.ViewEpisodeStatistics((PodcasterUser)currentUser);
                     break;
-                case 6:
+                case FEEDBACK:
                     podcastService.ViewFeedback((PodcasterUser)currentUser);
                     break;
-                case 7:
+                case EXIT:
                     currentUser = null;
                     break;
                 default:
@@ -212,33 +265,49 @@ public class PodcastController
         }
     }
  
+    /// <summary>
+    /// This method handles the connection between the user service and controller of creating a new regular listener.
+    /// </summary>
     private void createNewRegularUser()
     {
+        // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a regular listener.");
         List<Func<object>> userMethods = view.RegisterNewUser();
+
+        // Test if the users inputs match the domain class requirements. If so, return a list of valid inputs
         List<string> validatedInputs = userService.ValidateNewUser(userMethods);
 
+        // Store all validated inputs in their own seperate variables so they can be passed into the new instance of the class
         string finalName = validatedInputs[0];
-        int finalAge = int.Parse(validatedInputs[1]); // Safe to parse because the service already verified it's a number
+        int finalAge = int.Parse(validatedInputs[1]); 
         string finalEmail = validatedInputs[3];
-        string finalMobile = validatedInputs[2]; // Safe to parse
+        string finalMobile = validatedInputs[2]; 
         string finalPassword = validatedInputs[4];
 
-        // 5. Create your actual concrete User object (e.g., a 'Listener' or 'Creator' subclass)
-        // Since 'User' is abstract, substitute 'ListenerUser' below with your actual concrete class name:
+        // Create a new instance of the user with the stored validated inputs.
         User newUser = new RegularUser(finalName, finalAge, finalMobile, finalEmail, finalPassword);
+
+        // Display the successful creation of the user
         view.DisplayString(newUser.UserWelcomeString());
         userRepository.AddUser(newUser); 
     }
 
+    /// <summary>
+    /// This method handles the connection between the user service and the controller class for creating a new premium user
+    /// </summary>
     private void createNewPremiumUser()
     {
+        // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a premium listener.");
         List<Func<object>> userMethods = view.RegisterNewUser();
         List<Func<object>> premiumUserMethods = view.RegisterNewPremiumUser();
+
+        // Test if the users inputs match the domain class requirements. If so, return a list of valid inputs
+        // Additional inputs are tested as the premium class features two new inputs
         List<string> validatedInputs = userService.ValidateNewUser(userMethods);
         List<string> premiumValidatedInputs = userService.ValidatePremiumUser(premiumUserMethods);
 
+        // Store all validated inputs in their own seperate variables so they can be passed into the new instance of the class
         string finalName = validatedInputs[0];
         int finalAge = int.Parse(validatedInputs[1]); // Safe to parse because the service already verified it's a number
         string finalEmail = validatedInputs[3];
@@ -247,31 +316,44 @@ public class PodcastController
         string finalDate = premiumValidatedInputs[0];
         int finalPayID = int.Parse(premiumValidatedInputs[1]);
 
+        // Create a new instance of the user with the stored validated inputs.
         User newUser = new PremiumUser(finalName, finalAge, finalMobile, finalEmail, finalPassword, finalDate, finalPayID);
+
+        // Display the successful creation of the user
         view.DisplayString(newUser.UserWelcomeString());
         userRepository.AddUser(newUser); 
     }
 
+    /// <summary>
+    /// This method handles the connection between the user service and the controller for creating a new podcaster
+    /// </summary>
     private void createNewPodcasterUser()
     {
+        // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a podcaster.");
         List<Func<object>> userMethods = view.RegisterNewUser();
         List<Func<object>> podcasterUserMethods = view.RegisterNewPodcasterUser();
+
+        // Validate the provided inputs alongside the new inputs of podcast name
         List<string> validatedInputs = userService.ValidateNewUser(userMethods);
         List<string> podcasterValidatedInputs = userService.ValidatePodcasterUser(podcasterUserMethods);
 
+        // User details
         string finalName = validatedInputs[0];
         int finalAge = int.Parse(validatedInputs[1]); // Safe to parse because the service already verified it's a number
         string finalEmail = validatedInputs[3];
         string finalMobile = validatedInputs[2]; // Safe to parse
         string finalPassword = validatedInputs[4];
 
+        // Podcast specific information
         PodcastConsts.Genre finalPodcastGenre = (PodcastConsts.Genre)int.Parse(podcasterValidatedInputs[0]);
         string finalPodcastName = podcasterValidatedInputs[1];
         string finalPodcastDescription = podcasterValidatedInputs[2];
 
-
+        // Create a new instance of the user
         User newUser = new PodcasterUser(finalName, finalAge, finalMobile, finalEmail, finalPassword, finalPodcastGenre, finalPodcastName, finalPodcastDescription);
+
+        // Display the successful creation of the user
         view.DisplayString(newUser.UserWelcomeString());
         userRepository.AddUser(newUser); 
     }

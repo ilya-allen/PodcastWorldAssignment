@@ -9,6 +9,13 @@ public static class PodcastConsts
     public const int MIN_PAYID_VALUE = 100000;
     public const int MAX_PAYID_VALUE = 999999;
 
+    // Login Consts
+    public const int VIEW_DETAILS = 1;
+    public const int CHANGE_PASSWORD = 2;
+    public const int VIEW_PODCASTS = 3;
+    public const int LISTEN = 4;
+    
+
     public enum Genre
     {
         News = 1,
