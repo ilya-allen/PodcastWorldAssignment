@@ -2,14 +2,41 @@
 using System.Text.RegularExpressions;
 using System.Globalization;
 
+
+/// <summary>
+/// A class used to represent individual episodes. Will fall under a podcasters overview
+/// 
+/// Responsibility: Represent an episode and store its data
+/// </summary>
+
 public class Episode
 {
+
+    // Fields
+
+    // Name of the episode
     private string _episodeName;
+
+    // Description of episode
     private string _episodeDescription;
+
+    // Date of episode
     private string _episodeDate;
+
+    // Length of episode in minutes
     private int _episodeLength;
+
+    // Bool representing whether an episode is only for premium listeners
     private bool _episodePremiumOnly;
 
+
+
+    // Properties
+    
+
+    /// <summary>
+    /// Gets the name of the episode, checking the provided input value is valid, otherwise throwing an error
+    /// </summary>
     public string EpisodeName
     {
         get => _episodeName;
@@ -24,6 +51,10 @@ public class Episode
         }
     }
 
+
+    /// <summary>
+    /// Gets the description of the episode, checking the provided text is valid, otherwise throwing an error
+    /// </summary>
     public string EpisodeDescription
     {
         get => _episodeDescription;
@@ -38,6 +69,9 @@ public class Episode
         }
     }
 
+    /// <summary>
+    /// Gets the date of the episode, following real date time by using System.Globalization.
+    /// </summary>
     public string EpisodeDate
     {
         get => _episodeDate;
@@ -53,12 +87,15 @@ public class Episode
         }
     }
 
+    /// <summary>
+    /// Gets the length of the episode in minutes, ensuring that the value is within the required range
+    /// </summary>
     public int EpisodeLength
     {
         get => _episodeLength;
         protected set
         {
-            if (value < 1 || value > 300)
+            if (value < PodcastConsts.MIN_EPISODE_LENGTH || value > PodcastConsts.MAX_EPISODE_LENGTH)
             {
                 throw new ArgumentException("# Error - Supplied value is out of range.");
             }
@@ -67,6 +104,9 @@ public class Episode
         }
     }
 
+    /// <summary>
+    /// Gets whether the episode requires for the user to be a premium listener to listen to or not.
+    /// </summary>
     public bool EpisodePremiumOnly
     {
         get => _episodePremiumOnly;
@@ -76,6 +116,14 @@ public class Episode
         }
     }
 
+    /// <summary>
+    /// Episode constructor
+    /// </summary>
+    /// <param name="name">Valid Name</param>
+    /// <param name="description">Valid Text Description</param>
+    /// <param name="date">Valid Real Date in accordance with system.globalization</param>
+    /// <param name="length">Valid integer episode length in minutes</param>
+    /// <param name="premiumOnly">Boolean for premium requirement</param>
     public Episode(string name, string description, string date, int length, bool premiumOnly)
     {
         EpisodeName = name;

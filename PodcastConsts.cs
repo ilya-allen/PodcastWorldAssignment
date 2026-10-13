@@ -8,6 +8,8 @@ public static class PodcastConsts
     public const int MIN_PASSWORD_LENGTH = 8;
     public const int MIN_PAYID_VALUE = 100000;
     public const int MAX_PAYID_VALUE = 999999;
+    public const int MIN_EPISODE_LENGTH = 1;
+    public const int MAX_EPISODE_LENGTH = 300;
 
     // Login Consts
     public const int VIEW_DETAILS = 1;

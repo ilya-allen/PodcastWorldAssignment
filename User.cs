@@ -76,6 +76,10 @@ public abstract class User
         get => _age;
         protected set
         {
+            if(value == -101)
+            {
+                throw new ArgumentException("# Error - Supplied value must be an integral number.");
+            }
             if(value < PodcastConsts.MIN_AGE || value > PodcastConsts.MAX_AGE)
             {
                 throw new ArgumentException("# Error - Supplied age is invalid.");

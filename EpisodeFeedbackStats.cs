@@ -1,11 +1,28 @@
 ﻿namespace podcastWorld;
 
+
+/// <summary>
+/// A class that tracks the feedback of a specified episode by taking all playbacks for a specified episode.
+/// 
+/// Responsibility: Provide a class containing all reviews and thumbs up for an episode
+/// </summary>
 public class EpisodeFeedbackStats
 {
+    // Fields
+
+    // Desired episode for statistics
     private Episode _episode;
+
+    // Count of all thumbs up over the playbacks of the specific episode
     private int _thumbsUpCount;
+    
+    // List containing all written feedback.
     private List<Feedback> _reviews = new List<Feedback>();
 
+
+    /// <summary>
+    /// Gets the desired episode that will be read for all provided feedback. Ensuring the episode passed is indeed a real episode.
+    /// </summary>
     public Episode Episode
     {
         get => _episode;
@@ -19,6 +36,9 @@ public class EpisodeFeedbackStats
         }
     }
 
+    /// <summary>
+    /// Gets the thumbs up count for the specified episode
+    /// </summary>
     public int ThumbsUpCount
     {
         get => _thumbsUpCount;
@@ -32,6 +52,9 @@ public class EpisodeFeedbackStats
         }
     }
 
+    /// <summary>
+    /// Gets all the written feedback inside of a list.
+    /// </summary>
     public List<Feedback> Reviews
     {
         get => _reviews;
@@ -45,6 +68,12 @@ public class EpisodeFeedbackStats
         }
     }
 
+    /// <summary>
+    /// Episode feedback constructor
+    /// </summary>
+    /// <param name="episode">Valid episode</param>
+    /// <param name="thumbsUpCount">Total amount of thumbs up</param>
+    /// <param name="reviews">All written reviews</param>
     public EpisodeFeedbackStats(Episode episode, int thumbsUpCount = 0, List<Feedback> reviews = null)
     {
         Episode = episode;
