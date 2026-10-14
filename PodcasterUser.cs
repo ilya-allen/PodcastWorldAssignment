@@ -17,6 +17,8 @@ public class PodcasterUser : User
     private List<Feedback> _providedFeedback = new List<Feedback>();
     // Provides a read only option for the feedback list
     public IReadOnlyList<Feedback> ProvidedFeedback => _providedFeedback.AsReadOnly();
+
+    public IReadOnlyList<Episode> Episodes => _episodes.AsReadOnly();
     // Simple counter for the podcast subscribers.
     public int PodcastSubscribers { get; private set; } = 0;
     
@@ -122,12 +124,6 @@ public class PodcasterUser : User
     public void AddEpisode(Episode episode)
     {
         _episodes.Add(episode);
-    }
-
-    // Code smell
-    public List<Episode> GetEpisodeList()
-    {
-        return _episodes; // Code smell
     }
 
     /// <summary>

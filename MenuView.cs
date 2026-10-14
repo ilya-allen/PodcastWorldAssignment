@@ -237,7 +237,7 @@ public class MenuView
     /// This method takes a collection input and provides a formatted table from the inputs
     /// </summary>
     /// <param name="episodes">A list of valid episodes to be displayed</param>
-    public void DisplayPodcasterEpisodes(List<Episode> episodes)
+    public void DisplayPodcasterEpisodes(IReadOnlyList<Episode> episodes)
     {
         Console.WriteLine("Your episodes.");
         Console.WriteLine("Num  Name                          Recorded Date  Length (min)   Premium Only");
@@ -271,7 +271,7 @@ public class MenuView
     /// Displays a formatted table of a collection of episodes.
     /// </summary>
     /// <param name="episodes">A valid list of episodes</param>
-    public void DisplayEpisodes(List<Episode> episodes)
+    public void DisplayEpisodes(IReadOnlyList<Episode> episodes)
     {
         Console.WriteLine("List of episodes.");
         Console.WriteLine("Num  Name                          Recorded Date  Length (min)   Premium Only   Description");

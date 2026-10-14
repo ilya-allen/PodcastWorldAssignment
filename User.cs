@@ -204,6 +204,17 @@ public abstract class User
     /// <returns>A string describing the user type</returns>
     public abstract string UserType();
 
+
+    /// <summary>
+    /// Checks the access level of the episode depending on the user type
+    /// </summary>
+    /// <param name="episode">Provided episode</param>
+    /// <returns>Whether the user can listen to the episode or not</returns>
+    public virtual bool CanAccessEpisode(Episode episode)
+    {
+        return true;
+    }
+
     /// <summary>
     /// Retrieves the playback session through provided episode search input
     /// </summary>

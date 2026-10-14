@@ -31,6 +31,16 @@ public class RegularUser : User
     }
 
     /// <summary>
+    /// Overriden boolean, checks the access level of the episode for the regular listener
+    /// </summary>
+    /// <param name="episode">Provided episode</param>
+    /// <returns>Whether the regular listener can listen to the episode or not</returns>
+    public override bool CanAccessEpisode(Episode episode)
+    {
+        return !episode.EpisodePremiumOnly;
+    }
+
+    /// <summary>
     /// Overriden string, providing the user's type in text
     /// </summary>
     /// <returns>String message of user type</returns>

@@ -61,7 +61,7 @@ public class PodcastService
         if(userInput == null) return; // Null checker 
         view.DisplayString(userInput.PodcastInfoString());
         if(!ensureEpisodeExists(userInput)) return; // Null checker
-        view.DisplayEpisodes(userInput.GetEpisodeList());
+        view.DisplayEpisodes(userInput.Episodes);
             
     }
 
@@ -239,7 +239,7 @@ public class PodcastService
     public void ViewPodcastEpisodes(PodcasterUser podcasterUser)
     {
         if(!ensureEpisodeExists(podcasterUser, true)) return;
-        view.DisplayPodcasterEpisodes(podcasterUser.GetEpisodeList());
+        view.DisplayPodcasterEpisodes(podcasterUser.Episodes);
     }
 
     /// <summary>
@@ -249,7 +249,7 @@ public class PodcastService
     public void ViewEpisodeStatistics(PodcasterUser podcasterUser)
     {
         if(!ensureEpisodeExists(podcasterUser, true)) return;
-        List<Episode> podcasterEpisodes = podcasterUser.GetEpisodeList();
+        List<Episode> podcasterEpisodes = podcasterUser.Episodes.ToList();
 
         // This is the placeholder for each episode and their respective statistics before being passed into the view display function
         Dictionary<Episode, int[]> episodeStatistics = new Dictionary<Episode, int[]>();
@@ -285,11 +285,11 @@ public class PodcastService
         if(!ensurePodcastExists()) return;
         view.DisplayString($"Displaying potential podcasts for {user.Name} to provide feedback on.");
        
-        PodcasterUser? targetPodcaster = getPodcaster();
-        if(targetPodcaster == null) return;
-        if(!ensureEpisodeExists(targetPodcaster)) return;
+        PodcasterUser? podcasterUser = getPodcaster();
+        if(podcasterUser == null) return;
+        if(!ensureEpisodeExists(podcasterUser)) return;
     
-        List<Episode> episodeList = targetPodcaster.GetEpisodeList();
+        List<Episode> episodeList = podcasterUser.Episodes.ToList();
         Episode? userInputEpisode = getPodcastEpisode(episodeList.ToList());
         if(userInputEpisode == null) return;
         
@@ -303,7 +303,7 @@ public class PodcastService
         
 
         Feedback newFeedback = new Feedback(user, userInputEpisode, finalIsThumbsUp, finalText);
-        targetPodcaster.AddReview(newFeedback);
+        podcasterUser.AddReview(newFeedback);
 
     }
 
@@ -315,7 +315,7 @@ public class PodcastService
     {
         if(!ensureEpisodeExists(podcasterUser, true)) return;
         List<Feedback> podcasterFeedback = podcasterUser.ProvidedFeedback.ToList();
-        List<Episode> podcasterEpisodes = podcasterUser.GetEpisodeList();
+        List<Episode> podcasterEpisodes = podcasterUser.Episodes.ToList();
 
         // Placeholder list for all episodes and their possible feedback
         List<EpisodeFeedbackStats> statsList = new List<EpisodeFeedbackStats>();
@@ -576,13 +576,13 @@ public class PodcastService
     // Taking a podcaster user, check if any episodes exist
     private bool ensureEpisodeExists(PodcasterUser podcasterUser, bool fromPodcaster = false)
     {
-        if(podcasterUser.GetEpisodeList().Count < 1 && fromPodcaster == false)
+        if(podcasterUser.Episodes.Count < 1 && fromPodcaster == false)
         {
             view.DisplayError("# Error - The podcaster has not recorded any episodes.");
             return false;
         }
 
-        if(podcasterUser.GetEpisodeList().Count < 1 && fromPodcaster == true)
+        if(podcasterUser.Episodes.Count < 1 && fromPodcaster == true)
         {
             view.DisplayError("# Error - You have not recorded any episodes.");
             return false;
@@ -633,7 +633,7 @@ public class PodcastService
     // Return a chosen episode from a provided podcaster.
     private Episode? getPodcastEpisode(PodcasterUser podcasterUser)
     {
-        List<Episode> episodes = podcasterUser.GetEpisodeList();
+        List<Episode> episodes = podcasterUser.Episodes.ToList();
 
         view.DisplayEpisodes(episodes);
         bool isValidInput = false;
