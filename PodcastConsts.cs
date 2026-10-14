@@ -1,5 +1,9 @@
 ﻿namespace podcastWorld;
 
+
+/// <summary>
+/// Store unchanging variables, including domain rules, commonly used, and enums
+/// </summary>
 public static class PodcastConsts
 {
     public const int MAX_AGE = 99;
