@@ -1,5 +1,14 @@
 ﻿namespace podcastWorld;
 
+
+/// <summary>
+/// Represents a single input step method, executing a user prompt and returning the user input value.
+/// </summary>
+/// <returns>Value retrieved from the user input</returns>
+public delegate object InputStep(); 
+// Week 12 Lecture; Delegates allow for the desicion point of which method to call to be separate from where you actually call the method
+
+
 /// <summary>
 /// Presents all displays and user input prompts to the screen. All messages and
 /// information displayed to the user must go through the Menu View class.
@@ -55,22 +64,26 @@ public class MenuView
     }
 
 
-    // List<Func<object>>'s
-    // Explanation:
-    //  By using a List Func Object, the service is able to take each step
-    /// of the provided list of functions one by one, so that if any errors is found at a certain step,
-    /// the service can stop, and wait until a correct input
-    /// is provided before moving onto the next step. This means that all the private individual steps are stored
-    /// in one list, without needing to call them all at once
+    /*  List<InputStep>'s
+
+        Explanation:
+        Previously, when registering a user, or creating a new podcast etc.. all input methods were called at once, therefore if an error occured, it was impossible to track it down to a single step unless it crashes the program.
+
+        By using a the delegate object, the service is able to take each step
+        of the provided list of functions one by one, so that if any errors is found at a certain step,
+        the service can stop, and wait until a correct input
+        is provided before moving onto the next step. This means that all the private individual steps are stored
+        in one list, without needing to call them all at once. (Week 12, Live Lecture)
+    */
 
 
     /// <summary>
     /// A collection of all steps needed to register a new user.
     /// </summary>
     /// <returns>A list containing each method of registration</returns>
-    public List<Func<object>> RegisterNewUser() 
+    public List<InputStep> RegisterNewUser() 
     {
-        List<Func<object>> userData = new List<Func<object>>
+        List<InputStep> userData = new List<InputStep>
         {
             () => getUserName(),     
             () => getUserAge(),      
@@ -87,9 +100,9 @@ public class MenuView
     /// This is added alongside the general registration
     /// </summary>
     /// <returns>List of methods for premium user</returns>
-    public List<Func<object>> RegisterNewPremiumUser()
+    public List<InputStep> RegisterNewPremiumUser()
     {
-        List<Func<object>> userData = new List<Func<object>>
+        List<InputStep> userData = new List<InputStep>
         {
             () => getUserDate(),
             () => getUserPayID()
@@ -102,9 +115,9 @@ public class MenuView
     /// A collection of additional methods needed for podcaster user registration.
     /// </summary>
     /// <returns>Additional methods needed for podcaster registration</returns>
-    public List<Func<object>> RegisterNewPodcasterUser()
+    public List<InputStep> RegisterNewPodcasterUser()
     {
-        List<Func<object>> userData = new List<Func<object>>
+        List<InputStep> userData = new List<InputStep>
         {
             () => getPodcastGenre(),
             () => getPodcastName(),
@@ -119,10 +132,10 @@ public class MenuView
     /// A collection of methods needed for user log in. General for all users
     /// </summary>
     /// <returns>List containing email and password inputs</returns>
-    public List<Func<object>> GetLogIn()
+    public List<InputStep> GetLogIn()
     {
         Console.WriteLine("Log in Menu.");
-        List<Func<object>> userData = new List<Func<object>> {
+        List<InputStep> userData = new List<InputStep> {
             getUserEmail,
             getUserPassword
         };
@@ -133,9 +146,9 @@ public class MenuView
     /// A collection of the methods needed for episode creation
     /// </summary>
     /// <returns>List containing user prompts</returns>
-    public List<Func<object>> GetEpisode()
+    public List<InputStep> GetEpisode()
     {
-        List<Func<object>> episodeData = new List<Func<object>> {
+        List<InputStep> episodeData = new List<InputStep> {
             () => getEpisodeName(),     
             () => getPodcastDescription(),      
             () => getEpisodeDate(), 
@@ -149,9 +162,9 @@ public class MenuView
     /// A collection of all methods needed for creating a playback session
     /// </summary>
     /// <returns>User prompts for listening to a new episode</returns>
-    public List<Func<object>> GetPlayback()
+    public List<InputStep> GetPlayback()
     {
-        List<Func<object>> playbackData = new List<Func<object>> {
+        List<InputStep> playbackData = new List<InputStep> {
             () => getPlaybackDate(),     
             () => getMinutesListened()
         };
@@ -162,9 +175,9 @@ public class MenuView
     /// A collection of all methods needed to create a review
     /// </summary>
     /// <returns>A list of necessary prompts for a new review</returns>
-    public List<Func<object>> GetReview()
+    public List<InputStep> GetReview()
     {
-        List<Func<object>> reviewData = new List<Func<object>> {
+        List<InputStep> reviewData = new List<InputStep> {
             getIsThumbsUp,
             getReviewText
         };

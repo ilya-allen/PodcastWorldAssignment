@@ -141,7 +141,7 @@ public class PodcastService
     /// <param name="podcasterUser">The podcaster creating the episode</param>
     public void CreateEpisode(PodcasterUser podcasterUser)
     {
-        List<Func<object>> episodeInput = view.GetEpisode(); // Prompts
+        List<InputStep> episodeInput = view.GetEpisode(); // Prompts
         List<string> validatedInputs = validateEpisode(episodeInput); 
 
         // Extract all valid inputs from the list, these inputs are stored individually
@@ -212,7 +212,7 @@ public class PodcastService
             return;
         }
 
-        List<Func<object>> playbackInput = view.GetPlayback();
+        List<InputStep> playbackInput = view.GetPlayback();
         List<string> validatedInputs = validatePlayback(playbackInput, episode, previousMinutes, checkExistingPlayback);
 
         string finalDate = validatedInputs[0];
@@ -294,7 +294,7 @@ public class PodcastService
         if(userInputEpisode == null) return;
         
         // Prompt user for inputs then validate these inputs
-        List<Func<object>> reviewInput = view.GetReview();
+        List<InputStep> reviewInput = view.GetReview();
         List<string> validatedInputs = validateFeedback(reviewInput, user, userInputEpisode);
 
         // Store extracted validated inputs before initialising a feedback class with them
@@ -356,14 +356,14 @@ public class PodcastService
     }
 
     // Provides a list of all validated inputs for an episode. Used during episode creation
-    private List<string> validateEpisode(List<Func<object>> episodeDetails)
+    private List<string> validateEpisode(List<InputStep> episodeDetails)
     {
         // Each input required
         const int NAME = 0, DESCRIPTION = 1, DATE = 2, LENGTH = 3, PREMIUM_ONLY = 4;
 
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in episodeDetails)
+        foreach(InputStep detail in episodeDetails)
         {
             bool isValidInput = false;
 
@@ -371,8 +371,7 @@ public class PodcastService
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
                     // A new instance of the tester class, featuring methods for each input field, testing aginst Episode's domain rules
                     ValidationEpisode validationEpisode = new ValidationEpisode();
@@ -429,20 +428,19 @@ public class PodcastService
     }
 
     // Provides a list of validated inputs for playback session. 
-    private List<string> validatePlayback(List<Func<object>> playbackDetails, Episode targetEpisode, int previousMinutes, Playback? existingPlayback = null)    
+    private List<string> validatePlayback(List<InputStep> playbackDetails, Episode targetEpisode, int previousMinutes, Playback? existingPlayback = null)    
     {
         const int DATE = 0, MINUTES_LISTENED = 1;
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in playbackDetails)
+        foreach(InputStep detail in playbackDetails)
         {
             bool isValidInput = false;
             while(!isValidInput)
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
                     switch (index)
                     {
@@ -501,13 +499,13 @@ public class PodcastService
     }
 
     // Returns a list of validated feedback inputs.
-    private List<string> validateFeedback(List<Func<object>> playbackDetails, User user, Episode targetEpisode)
+    private List<string> validateFeedback(List<InputStep> playbackDetails, User user, Episode targetEpisode)
     {
         const int RATING = 0, FEEDBACK = 1; 
 
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in playbackDetails)
+        foreach(InputStep detail in playbackDetails)
         {
             bool isValidInput = false;
 
@@ -516,8 +514,7 @@ public class PodcastService
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
 
                     switch (index)
@@ -609,7 +606,7 @@ public class PodcastService
         {
             try
             {
-                int userInput = view.GetInteger("Please enter the podcast's menu number to view more information or enter 0 to cancel:");  // CODE SMELL 
+                int userInput = view.GetInteger("Please enter the podcast's menu number to view more information or enter 0 to cancel:"); 
                 if (userInput == 0)
                 {
                     return null;
@@ -641,7 +638,7 @@ public class PodcastService
         {
             try
             {
-                int userInput = view.GetInteger("Please enter the episode's menu number to listen to the episode or enter 0 to cancel:"); // Code smell 
+                int userInput = view.GetInteger("Please enter the episode's menu number to listen to the episode or enter 0 to cancel:");
                 if (userInput == 0)
                 {
                     return null;
@@ -673,7 +670,7 @@ public class PodcastService
         {
             try
             {
-                int userInput = view.GetInteger("Please enter the episode's menu number to provide feedback or 0 to cancel:"); // Code smell 
+                int userInput = view.GetInteger("Please enter the episode's menu number to provide feedback or 0 to cancel:");
                 if (userInput == 0)
                 {
                     return null;

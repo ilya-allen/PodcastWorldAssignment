@@ -75,14 +75,14 @@ public class UserService
     /// </summary>
     /// <param name="userDetails">A provided list of functions to gain each input necessary</param>
     /// <returns>All validated inputs used to register a new method</returns>
-    public List<string> ValidateNewUser(List<Func<object>> userDetails)
+    public List<string> ValidateNewUser(List<InputStep> userDetails)
     {
         const int NAME = 0, AGE = 1, MOBILE = 2, EMAIL = 3, PASSWORD = 4;
 
         // Placeholder for valid inputs
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in userDetails)
+        foreach(InputStep detail in userDetails)
         {
             bool isValidInput = false;
 
@@ -91,8 +91,7 @@ public class UserService
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
                     ValidationUser testUser = new ValidationUser();
 
@@ -152,13 +151,13 @@ public class UserService
     /// </summary>
     /// <param name="userDetails">A list of view input methods, prompting the user for premium registration inputs.</param>
     /// <returns>A list of valid inputs for premium user registration</returns>
-    public List<string> ValidatePremiumUser(List<Func<object>> userDetails)
+    public List<string> ValidatePremiumUser(List<InputStep> userDetails)
     {
         const int DATE = 0, PAY_ID = 1;
 
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in userDetails)
+        foreach(InputStep detail in userDetails)
         {
             bool isValidInput = false;
 
@@ -167,8 +166,7 @@ public class UserService
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
                     switch (index)
                     {
@@ -208,13 +206,13 @@ public class UserService
     /// </summary>
     /// <param name="userDetails">A list of view input methods, prompting the user for podcaster registration inputs.</param>
     /// <returns>A list of valid inputs for premium user registration</returns>
-    public List<string> ValidatePodcasterUser(List<Func<object>> userDetails)
+    public List<string> ValidatePodcasterUser(List<InputStep> userDetails)
     {
         const int GENRE = 0, PODCAST_NAME = 1, DESCRIPTION = 2;
 
         List<string> validInputs = new List<string>();
         int index = 0;
-        foreach(object detail in userDetails)
+        foreach(InputStep detail in userDetails)
         {
             bool isValidInput = false;
 
@@ -223,8 +221,7 @@ public class UserService
             {
                 try
                 {
-                    var inputMethod = (Func<object>)detail;
-                    object methodResult = inputMethod();
+                    object methodResult = detail();
 
                     switch (index)
                     {
@@ -295,7 +292,7 @@ public class UserService
     /// </summary>
     /// <param name="userDetails">A list of view methods, ready to be iterated over</param>
     /// <returns>A user, ready to be passed into the current user field</returns>
-    public User? AuthenticateUser(List<Func<object>> userDetails)
+    public User? AuthenticateUser(List<InputStep> userDetails)
     {
         string email = string.Empty;
         bool isValidInput = false;

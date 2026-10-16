@@ -272,7 +272,7 @@ public class PodcastController
     {
         // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a regular listener.");
-        List<Func<object>> userMethods = view.RegisterNewUser();
+        List<InputStep> userMethods = view.RegisterNewUser();
 
         // Test if the users inputs match the domain class requirements. If so, return a list of valid inputs
         List<string> validatedInputs = userService.ValidateNewUser(userMethods);
@@ -299,8 +299,8 @@ public class PodcastController
     {
         // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a premium listener.");
-        List<Func<object>> userMethods = view.RegisterNewUser();
-        List<Func<object>> premiumUserMethods = view.RegisterNewPremiumUser();
+        List<InputStep> userMethods = view.RegisterNewUser();
+        List<InputStep> premiumUserMethods = view.RegisterNewPremiumUser();
 
         // Test if the users inputs match the domain class requirements. If so, return a list of valid inputs
         // Additional inputs are tested as the premium class features two new inputs
@@ -331,8 +331,8 @@ public class PodcastController
     {
         // This section takes all user inputs through displaying prompts
         view.DisplayString("Registering as a podcaster.");
-        List<Func<object>> userMethods = view.RegisterNewUser();
-        List<Func<object>> podcasterUserMethods = view.RegisterNewPodcasterUser();
+        List<InputStep> userMethods = view.RegisterNewUser();
+        List<InputStep> podcasterUserMethods = view.RegisterNewPodcasterUser();
 
         // Validate the provided inputs alongside the new inputs of podcast name
         List<string> validatedInputs = userService.ValidateNewUser(userMethods);
